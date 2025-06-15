@@ -1,6 +1,7 @@
 {
-  "name": "z-wf-starter",
-  "description": "Starter template that I use for all my Webflow projects.",
+  "name": "island-properties-2025",
+  "description": "Custom code repo for island properties website",
+  "homepage": "https://island2025.webflow.io",
   "license": "ISC",
   "keywords": [],
   "type": "module",
