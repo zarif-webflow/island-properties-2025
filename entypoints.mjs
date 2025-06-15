@@ -4,6 +4,6 @@
  */
 export const ENTRY_POINTS = [
   "src/intl-tel-input.ts",
-  "src/multi-step-form.ts",
+  "src/calculator-form.ts",
   "src/search-address.ts",
 ];
