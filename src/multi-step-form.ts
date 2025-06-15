@@ -1,5 +1,21 @@
 import { getGsap, getHtmlElement, getMultipleHtmlElements } from "@taj-wf/utils";
 
+const makeAllInputElementsUnfocusable = (parent: HTMLElement) => {
+  const allInputElements = getMultipleHtmlElements({ selector: "input, select, textarea", parent });
+  if (!allInputElements) return;
+  for (const inputElement of allInputElements) {
+    inputElement.setAttribute("tabindex", "-1");
+  }
+};
+
+const makeAllInputElementsFocusable = (parent: HTMLElement) => {
+  const allInputElements = getMultipleHtmlElements({ selector: "input, select, textarea", parent });
+  if (!allInputElements) return;
+  for (const inputElement of allInputElements) {
+    inputElement.removeAttribute("tabindex");
+  }
+};
+
 const initMultiStepForm = () => {
   const [gsap] = getGsap();
 
@@ -47,6 +63,9 @@ const initMultiStepForm = () => {
     if (!addressInputElement || !bedroomsSelectElement) continue;
 
     const animateNext = async () => {
+      makeAllInputElementsUnfocusable(step1Element);
+      makeAllInputElementsFocusable(step2Element);
+
       gsap.to(step1Element, { opacity: 0, xPercent: -102, duration: 0.6, ease: "power1.inOut" });
 
       gsap.fromTo(
@@ -62,6 +81,9 @@ const initMultiStepForm = () => {
     };
 
     const animatePrev = async () => {
+      makeAllInputElementsUnfocusable(step2Element);
+      makeAllInputElementsFocusable(step1Element);
+
       gsap.fromTo(
         step1Element,
         { opacity: 0, xPercent: -100 },
@@ -98,6 +120,9 @@ const initMultiStepForm = () => {
     prevButton.addEventListener("click", () => {
       animatePrev();
     });
+
+    makeAllInputElementsFocusable(step1Element);
+    makeAllInputElementsUnfocusable(step2Element);
   }
 };
 
