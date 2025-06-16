@@ -49,6 +49,9 @@ const initMultiStepForm = () => {
 
     if (!step1Element || !step2Element || !nextButton || !prevButton) continue;
 
+    nextButton.setAttribute("type", "button");
+    prevButton.setAttribute("type", "button");
+
     const addressInputElement = getHtmlElement<HTMLInputElement>({
       selector: "input[data-address-input]",
       parent: form,
@@ -63,48 +66,35 @@ const initMultiStepForm = () => {
     if (!addressInputElement || !bedroomsSelectElement) continue;
 
     const animateNext = async () => {
-      makeAllInputElementsUnfocusable(step1Element);
-      makeAllInputElementsFocusable(step2Element);
-
-      gsap.to(step1Element, { opacity: 0, xPercent: -102, duration: 0.6, ease: "power1.inOut" });
-
-      gsap.fromTo(
-        step2Element,
-        { opacity: 0, xPercent: 0 },
-        {
-          opacity: 1,
-          xPercent: -100,
-          duration: 0.6,
-          ease: "power1.inOut",
-        }
-      );
+      gsap.set(step1Element, { opacity: 1, xPercent: 0 });
+      gsap.set(step2Element, { opacity: 0, xPercent: 102 });
+      gsap.to(step1Element, {
+        opacity: 0,
+        xPercent: -102,
+        duration: 0.4,
+        ease: "power1.out",
+        onComplete: () => {
+          step1Element.classList.add("is--hidden");
+          step2Element.classList.remove("is--hidden");
+          gsap.to(step2Element, { opacity: 1, xPercent: 0, duration: 0.4, ease: "power1.out" });
+        },
+      });
     };
 
     const animatePrev = async () => {
-      makeAllInputElementsUnfocusable(step2Element);
-      makeAllInputElementsFocusable(step1Element);
-
-      gsap.fromTo(
-        step1Element,
-        { opacity: 0, xPercent: -100 },
-        {
-          opacity: 1,
-          xPercent: 0,
-          duration: 0.6,
-          ease: "power1.inOut",
-        }
-      );
-
-      gsap.fromTo(
-        step2Element,
-        { opacity: 1, xPercent: -100 },
-        {
-          opacity: 0,
-          xPercent: 0,
-          duration: 0.6,
-          ease: "power1.inOut",
-        }
-      );
+      gsap.set(step2Element, { opacity: 1, xPercent: 0 });
+      gsap.set(step1Element, { opacity: 0, xPercent: -102 });
+      gsap.to(step2Element, {
+        opacity: 0,
+        xPercent: 102,
+        duration: 0.3,
+        ease: "power1.out",
+        onComplete: () => {
+          step2Element.classList.add("is--hidden");
+          step1Element.classList.remove("is--hidden");
+          gsap.to(step1Element, { opacity: 1, xPercent: 0, duration: 0.3, ease: "power1.out" });
+        },
+      });
     };
 
     nextButton.addEventListener("click", () => {
@@ -113,7 +103,6 @@ const initMultiStepForm = () => {
         inputEl.reportValidity();
         return;
       }
-
       animateNext();
     });
 
