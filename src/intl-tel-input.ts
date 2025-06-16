@@ -41,12 +41,16 @@ const initIntlTelInputs = () => {
 
     if (!inputParentForm) continue;
 
-    const submitButton = getHtmlElement<HTMLButtonElement>({
+    const submitButtonOriginal = getHtmlElement<HTMLButtonElement>({
       selector: "button[type=submit], input[type=submit], [data-tform-submit=true]",
       parent: inputParentForm,
     });
 
-    if (!submitButton) continue;
+    if (!submitButtonOriginal) continue;
+
+    const submitButton = submitButtonOriginal.cloneNode(true) as HTMLButtonElement;
+
+    submitButtonOriginal.parentNode?.replaceChild(submitButton, submitButtonOriginal);
 
     const errorElement = getHtmlElement({
       selector: "[data-phone-error]",
@@ -94,7 +98,8 @@ const initIntlTelInputs = () => {
         fullPhoneNumberInput.value = fullNumber;
         countryNameInput.value = countryName ?? "";
 
-        inputParentForm.requestSubmit();
+        submitButton.parentNode?.replaceChild(submitButtonOriginal, submitButton);
+        submitButtonOriginal.click();
         return;
       }
       hasErrorOccured = true;
