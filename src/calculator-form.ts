@@ -1,21 +1,5 @@
 import { getGsap, getHtmlElement, getMultipleHtmlElements } from "@taj-wf/utils";
 
-const makeAllInputElementsUnfocusable = (parent: HTMLElement) => {
-  const allInputElements = getMultipleHtmlElements({ selector: "input, select, textarea", parent });
-  if (!allInputElements) return;
-  for (const inputElement of allInputElements) {
-    inputElement.setAttribute("tabindex", "-1");
-  }
-};
-
-const makeAllInputElementsFocusable = (parent: HTMLElement) => {
-  const allInputElements = getMultipleHtmlElements({ selector: "input, select, textarea", parent });
-  if (!allInputElements) return;
-  for (const inputElement of allInputElements) {
-    inputElement.removeAttribute("tabindex");
-  }
-};
-
 const initMultiStepForm = () => {
   const [gsap] = getGsap();
 
@@ -109,9 +93,6 @@ const initMultiStepForm = () => {
     prevButton.addEventListener("click", () => {
       animatePrev();
     });
-
-    makeAllInputElementsFocusable(step1Element);
-    makeAllInputElementsUnfocusable(step2Element);
   }
 };
 
