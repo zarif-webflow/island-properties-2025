@@ -1,15 +1,8 @@
 import { Loader } from "@googlemaps/js-api-loader";
-import { getHtmlElement } from "@taj-wf/utils";
+import { getActiveScript } from "@taj-wf/utils";
 import { debounce } from "es-toolkit";
 
-const getActiveScript = () => {
-  const currentModuleUrl = import.meta.url;
-  return getHtmlElement<HTMLScriptElement>({
-    selector: `script[src="${currentModuleUrl}"]`,
-  });
-};
-
-const scriptElement = getActiveScript();
+const scriptElement = getActiveScript(import.meta.url);
 
 if (!scriptElement) {
   throw new Error("Search Address script element was not found!");
